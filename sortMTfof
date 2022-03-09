@@ -1,0 +1,19 @@
+import numpy as np
+import pygio
+
+data = pygio.read_genericio("/ofs/dest/MiraTitanU/Grid/M010/L2100/HACC007/analysis/Halos/b0168/FOFp/STEP499/m010-499.fofproperties#68", ["fof_halo_tag", "fof_halo_mass", "fof_halo_center_x", "fof_halo_center_y", "fof_halo_center_z", "fof_halo_mean_vx", "fof_halo_mean_vy", "fof_halo_mean_vz"])
+
+tag_arr = data["fof_halo_tag"]
+mass_arr = data["fof_halo_mass"]
+pos_x_arr = data["fof_halo_center_x"]
+pos_y_arr = data["fof_halo_center_y"]
+pos_z_arr = data["fof_halo_center_z"]
+vel_x_arr = data["fof_halo_mean_vx"]
+vel_y_arr = data["fof_halo_mean_vy"]
+vel_z_arr = data["fof_halo_mean_vz"]
+
+full_arr = np.stack((tag_arr, mass_arr, pos_x_arr, pos_y_arr, pos_z_arr, vel_x_arr, vel_y_arr, vel_z_arr), axis=1)
+
+master = full_arr[(full_arr[:,1] >= (10**14.5))]
+
+np.savetxt('pvans/FOF/M010/MT_68.txt', master)
