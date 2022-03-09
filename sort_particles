@@ -1,0 +1,28 @@
+#designed to match up halo id number. Creates one fits file with halo ID, mass, 3d position and 3d velocity using data from two sources. One source only has halo ID and mass, the other has halo ID, 3d position, and 3d velocity.
+
+import numpy as np
+import astropy
+from astropy.table import Table
+import pdb
+
+halo_tag = np.loadtxt('FOF/M010/MT_68.txt', usecols = (0,))
+#halo_mass = np.loadtxt('FOF/MT_9.txt', usecols = (1,))
+
+t = Table.read('halo/M010/MT_68_bighalopart.fits')
+#t_v = Table.read('halo/M001/z06/MT_68_bighalovel.fits')
+#pdb.set_trace()
+for i in range(len(halo_tag)):
+	w = np.where(t['halo_tag'] == halo_tag[i])[0]
+
+	px = t['pos_x'][w]
+	py = t['pos_y'][w]
+	pz = t['pos_z'][w]
+	vx = t['vel_x'][w]
+	vy = t['vel_y'][w]
+	vz = t['vel_z'][w]
+	halo_tag2 = t['halo_tag'][w]
+	filename = 'halo/sort/M010/halopart/'+str(halo_tag2[i])+'.0part.fits'
+	t2 = Table([px, py, pz, vx, vy, vz], names=('pos_x', 'pos_y', 'pos_z', 'vel_x', 'vel_y', 'vel_z'))
+
+	t2.write(filename, format = 'fits', overwrite=True)
+
