@@ -1,0 +1,19 @@
+import numpy as np
+import pygio
+from astropy.table import Table
+
+filename = 'pvans/Halos/M000/MT_0_bighalopart.fits'
+data = pygio.read_genericio("/ofs/dest/MiraTitanU/Grid/M000/L2100/HACC000/analysis/Halos/b0168/Halopart/STEP355/m000-355.bighaloparticles#11", ["x", "y", "z", "vx", "vy", "vz", "fof_halo_tag"])
+
+#halo_tag_arr = data["fof_halo_tag"]
+#x_arr = data["x"]
+#y_arr = data["y"]
+#z_arr = data["z"]
+#velx_arr = data["vx"]
+#vely_arr = data["vy"]
+#velz_arr = data["vz"]
+
+t = Table([data["fof_halo_tag"], data["x"], data["y"], data["z"], data["vx"], data["vy"], data["vz"]], names=('halo_tag', 'pos_x', 'pos_y', 'pos_z', 'vel_x', 'vel_y', 'vel_z'))
+
+t.write(filename, format = 'fits', overwrite=True)
+
